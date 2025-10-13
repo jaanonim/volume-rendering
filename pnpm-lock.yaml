@@ -11,6 +11,9 @@ importers:
 
   .:
     dependencies:
+      3d-game-engine-canvas:
+        specifier: ^0.1.27
+        version: 0.1.27
       gl-matrix:
         specifier: ^3.4.4
         version: 3.4.4
@@ -23,6 +26,9 @@ importers:
         version: rolldown-vite@7.1.14
 
 packages:
+
+  3d-game-engine-canvas@0.1.27:
+    resolution: {integrity: sha512-0ZkJ43SbMI0R3GE1wV7b+UKf+yuErtrV+pQr3hu78n46PFIq2QYH4/2r1hBZdC3a3OL+qk3UTo7LWsVFnxHWxA==}
 
   '@emnapi/core@1.5.0':
     resolution: {integrity: sha512-sbP8GzB1WDzacS8fgNPpHlp6C9VZe+SJP3F90W9rLemaQj2PzIuTEl1qDOYQf58YIpyjViI24y9aPWCjEzY2cg==}
@@ -305,6 +311,8 @@ packages:
     hasBin: true
 
 snapshots:
+
+  3d-game-engine-canvas@0.1.27: {}
 
   '@emnapi/core@1.5.0':
     dependencies:

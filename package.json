@@ -18,6 +18,7 @@
     }
   },
   "dependencies": {
+    "3d-game-engine-canvas": "^0.1.27",
     "gl-matrix": "^3.4.4"
   }
 }
