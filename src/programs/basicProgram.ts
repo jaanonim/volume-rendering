@@ -1,22 +1,16 @@
-import { teapot, toVertexArray } from "../models/models";
 import { basicProgram } from "../shaders/shaders";
 import { gl } from "../webgl/context";
 import { ShaderProgram } from "../webgl/shaderProgram";
-import { Transform, transform } from "../utils/transformations";
-
-const cubeArray = toVertexArray(teapot);
+import { Transform } from "../utils/transform";
+import { transform } from "../utils/vec";
 
 export class BasicProgram extends ShaderProgram {
-    constructor(public transform: Transform) {
+    constructor(public transform: Transform, public mesh: Float32Array) {
         super(basicProgram);
     }
 
     init() {
-        this.makeAttribute(
-            "a_position",
-            new Float32Array(cubeArray),
-            gl.STATIC_DRAW
-        );
+        this.makeAttribute("a_position", this.mesh, gl.STATIC_DRAW);
         this.makeUniform("u_matrix");
     }
 
@@ -48,7 +42,7 @@ export class BasicProgram extends ShaderProgram {
         );
 
         const primitiveType = gl.TRIANGLES;
-        const count = cubeArray.length;
+        const count = this.mesh.length;
         gl.drawArrays(primitiveType, offset, count);
     }
 }
