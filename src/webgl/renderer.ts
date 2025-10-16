@@ -14,10 +14,12 @@ export default class Renderer {
 
     setUpdate(update: () => void) {
         this.update = update;
+        return this;
     }
 
     setStart(start: () => void) {
         this.start = start;
+        return this;
     }
 
     run() {
@@ -26,6 +28,7 @@ export default class Renderer {
         });
         this.start();
         this.draw();
+        return this;
     }
 
     draw() {

@@ -8,8 +8,17 @@ const t = Transform.zero()
     .scale(new Vector3(0.3, 0.3, 0.3))
     .move(new Vector3(0, 0, -2));
 const b = new BasicProgram(t);
-const r = new Renderer([b]);
-r.setUpdate(() => {
-    t.rotate(new Vector3(5, 8, 12).multiply(Renderer.deltaTime));
-});
-r.run();
+
+const t2 = Transform.zero()
+    .scale(new Vector3(0.3, 0.3, 0.3))
+    .rotate(new Vector3(90, 56, 135))
+    .move(new Vector3(1, 1, -2));
+const b2 = new BasicProgram(t2);
+
+const speed = new Vector3(5, 8, 12);
+new Renderer([b, b2])
+    .setUpdate(() => {
+        t.rotate(speed.multiply(Renderer.deltaTime));
+        t2.rotate(speed.multiply(Renderer.deltaTime));
+    })
+    .run();
