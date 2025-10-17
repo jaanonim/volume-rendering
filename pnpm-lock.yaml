@@ -18,12 +18,15 @@ importers:
         specifier: ^3.4.4
         version: 3.4.4
     devDependencies:
+      '@types/node':
+        specifier: ^24.8.1
+        version: 24.8.1
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
       vite:
         specifier: npm:rolldown-vite@7.1.14
-        version: rolldown-vite@7.1.14
+        version: rolldown-vite@7.1.14(@types/node@24.8.1)
 
 packages:
 
@@ -137,6 +140,9 @@ packages:
 
   '@tybys/wasm-util@0.10.1':
     resolution: {integrity: sha512-9tTaPJLSiejZKx+Bmog4uSubteqTvFrVrURwkmHixBo0G4seD0zUxp98E1DzUBJxLQ3NPwXrGKDiVjwx/DpPsg==}
+
+  '@types/node@24.8.1':
+    resolution: {integrity: sha512-alv65KGRadQVfVcG69MuB4IzdYVpRwMG/mq8KWOaoOdyY617P5ivaDiMCGOFDWD2sAn5Q0mR3mRtUOgm99hL9Q==}
 
   ansis@4.2.0:
     resolution: {integrity: sha512-HqZ5rWlFjGiV0tDm3UxxgNRqsOTniqoKZu0pIAfh7TZQMGuZK+hH0drySty0si0QXj1ieop4+SkSfPZBPPkHig==}
@@ -310,6 +316,9 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  undici-types@7.14.0:
+    resolution: {integrity: sha512-QQiYxHuyZ9gQUIrmPo3IA+hUl4KYk8uSA7cHrcKd/l3p1OTpZcM0Tbp9x7FAtXdAYhlasd60ncPpgu6ihG6TOA==}
+
 snapshots:
 
   3d-game-engine-canvas@0.1.27: {}
@@ -392,6 +401,10 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
+  '@types/node@24.8.1':
+    dependencies:
+      undici-types: 7.14.0
+
   ansis@4.2.0: {}
 
   detect-libc@2.1.2: {}
@@ -466,7 +479,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  rolldown-vite@7.1.14:
+  rolldown-vite@7.1.14(@types/node@24.8.1):
     dependencies:
       '@oxc-project/runtime': 0.92.0
       fdir: 6.5.0(picomatch@4.0.3)
@@ -476,6 +489,7 @@ snapshots:
       rolldown: 1.0.0-beta.41
       tinyglobby: 0.2.15
     optionalDependencies:
+      '@types/node': 24.8.1
       fsevents: 2.3.3
 
   rolldown@1.0.0-beta.41:
@@ -510,3 +524,5 @@ snapshots:
     optional: true
 
   typescript@5.9.3: {}
+
+  undici-types@7.14.0: {}
