@@ -6,6 +6,7 @@ import Vector3 from "3d-game-engine-canvas/src/utilities/math/Vector3.ts";
 import { Camera } from "./utils/camera.ts";
 import { cube, teapot, toVertexArray } from "./models/models.ts";
 import Quaternion from "3d-game-engine-canvas/src/utilities/Quaternion.ts";
+import { RaymarchingProgram } from "./programs/raymarchingProgram.ts";
 
 const teapotModel = toVertexArray(teapot);
 const cubeModel = toVertexArray(cube);
@@ -20,8 +21,13 @@ const t2 = Transform.zero()
     .move(new Vector3(0, -1, 0));
 const b2 = new BasicProgram(t2, cubeModel);
 
+const rm = new RaymarchingProgram(
+    Transform.zero().move(new Vector3(0, 2, -5)),
+    cubeModel
+);
+
 const speed = new Vector3(0.5, 0.3, 0.2);
-new Renderer([b, b2])
+new Renderer([b, b2, rm])
     .setUpdate(() => {
         t.rotate(Quaternion.euler(speed.multiply(Renderer.deltaTime)));
     })
@@ -42,10 +48,10 @@ document.onkeydown = (e) => {
         case "d":
             Camera.camera.move(new Vector3(amount, 0, 0));
             break;
-        case "q":
+        case " ":
             Camera.camera.move(new Vector3(0, amount, 0));
             break;
-        case "e":
+        case "Control":
             Camera.camera.move(new Vector3(0, -amount, 0));
             break;
     }

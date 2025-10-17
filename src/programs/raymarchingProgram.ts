@@ -1,20 +1,23 @@
-import { basicProgram } from "../shaders/shaders";
+import { raymarchingProgram } from "../shaders/shaders";
 import { gl } from "../webgl/context";
 import { ShaderProgram } from "../webgl/shaderProgram";
 import { Transform } from "../utils/transform";
 import { transform } from "../utils/vec";
 
-export class BasicProgram extends ShaderProgram {
+export class RaymarchingProgram extends ShaderProgram {
     constructor(public transform: Transform, public mesh: Float32Array) {
-        super(basicProgram);
+        super(raymarchingProgram);
     }
 
     init() {
         this.makeAttribute("a_position", this.mesh, gl.STATIC_DRAW);
-        this.makeUniform("u_matrix");
+        this.makeUniform("u_matrix_projection");
+        this.makeUniform("u_matrix_camera_translation");
+        this.makeUniform("u_matrix_translation");
     }
 
     draw() {
+        gl.disable(gl.CULL_FACE);
         gl.useProgram(this.program);
 
         const a_vertex = this.attributes["a_position"];
@@ -35,12 +38,25 @@ export class BasicProgram extends ShaderProgram {
             offset
         );
 
-        const { uniformMatrix } = transform(this.transform);
+        const { lookAtMatrix, perspectiveMatrix, translationMatrix } =
+            transform(this.transform);
 
         gl.uniformMatrix4fv(
-            this.uniformsLocations["u_matrix"],
+            this.uniformsLocations["u_matrix_projection"],
             false,
-            uniformMatrix
+            perspectiveMatrix
+        );
+
+        gl.uniformMatrix4fv(
+            this.uniformsLocations["u_matrix_camera_translation"],
+            false,
+            lookAtMatrix
+        );
+
+        gl.uniformMatrix4fv(
+            this.uniformsLocations["u_matrix_translation"],
+            false,
+            translationMatrix
         );
 
         const primitiveType = gl.TRIANGLES;

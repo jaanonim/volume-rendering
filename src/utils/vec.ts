@@ -8,7 +8,14 @@ export function vector3ToVec3(v: Vector3): vec3 {
     return [v.x, v.y, v.z] as vec3;
 }
 
-export function transform(t: Transform): Float32Array {
+export interface TransformMatrices {
+    uniformMatrix: Float32Array;
+    lookAtMatrix: Float32Array;
+    perspectiveMatrix: Float32Array;
+    translationMatrix: Float32Array;
+}
+
+export function transform(t: Transform) {
     const m = mat4.create();
     const q = quat.fromValues(
         t._rotation.x,
@@ -56,5 +63,10 @@ export function transform(t: Transform): Float32Array {
     mat4.multiply(uniformMatrix, m, uniformMatrix);
     mat4.multiply(uniformMatrix, lookAtMatrix, uniformMatrix);
     mat4.multiply(uniformMatrix, perspectiveMatrix, uniformMatrix);
-    return uniformMatrix as Float32Array;
+    return {
+        uniformMatrix: uniformMatrix as Float32Array,
+        lookAtMatrix: lookAtMatrix as Float32Array,
+        perspectiveMatrix: perspectiveMatrix as Float32Array,
+        translationMatrix: m as Float32Array,
+    };
 }
