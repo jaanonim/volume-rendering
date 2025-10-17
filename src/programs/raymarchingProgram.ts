@@ -17,7 +17,7 @@ export class RaymarchingProgram extends ShaderProgram {
     }
 
     draw() {
-        gl.disable(gl.CULL_FACE);
+        gl.cullFace(gl.FRONT);
         gl.useProgram(this.program);
 
         const a_vertex = this.attributes["a_position"];
@@ -62,5 +62,6 @@ export class RaymarchingProgram extends ShaderProgram {
         const primitiveType = gl.TRIANGLES;
         const count = this.mesh.length;
         gl.drawArrays(primitiveType, offset, count);
+        gl.cullFace(gl.BACK);
     }
 }
