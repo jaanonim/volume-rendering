@@ -22,12 +22,14 @@ const t2 = Transform.zero()
 const b2 = new BasicProgram(t2, cubeModel);
 
 const rm = new RaymarchingProgram(
-    Transform.zero().move(new Vector3(0, 2, -5)),
+    Transform.zero()
+        .move(new Vector3(0, 0.1, -2))
+        .rotate(Quaternion.euler(new Vector3(0.1, Math.PI / 4, 0))),
     cubeModel
 );
 
 const speed = new Vector3(0.5, 0.3, 0.2);
-new Renderer([b, b2, rm])
+new Renderer([b2, rm])
     .setUpdate(() => {
         t.rotate(Quaternion.euler(speed.multiply(Renderer.deltaTime)));
     })

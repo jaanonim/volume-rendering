@@ -3,6 +3,8 @@ import { gl } from "../webgl/context";
 import { ShaderProgram } from "../webgl/shaderProgram";
 import { Transform } from "../utils/transform";
 import { transform } from "../utils/vec";
+import { fuel } from "../models/models";
+import { ColorMaps } from "../models/colorMaps";
 
 export class RaymarchingProgram extends ShaderProgram {
     constructor(public transform: Transform, public mesh: Float32Array) {
@@ -14,9 +16,14 @@ export class RaymarchingProgram extends ShaderProgram {
         this.makeUniform("u_matrix_projection");
         this.makeUniform("u_matrix_camera_translation");
         this.makeUniform("u_matrix_translation");
+        this.makeUniform("u_volume_size");
+        this.makeTexture3D("volume", fuel);
+        this.makeTexture2D("transfer_fn", ColorMaps.hot);
     }
 
     draw() {
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         gl.cullFace(gl.FRONT);
         gl.useProgram(this.program);
 
@@ -58,6 +65,26 @@ export class RaymarchingProgram extends ShaderProgram {
             false,
             translationMatrix
         );
+
+        gl.uniform3iv(
+            this.uniformsLocations["u_volume_size"],
+            new Int32Array([fuel.size.x, fuel.size.y, fuel.size.z])
+        );
+
+        gl.uniform1i(
+            this.textures["volume"].location,
+            this.textures["volume"].unit
+        );
+        gl.uniform1i(
+            this.textures["transfer_fn"].location,
+            this.textures["transfer_fn"].unit
+        );
+
+        gl.activeTexture(gl.TEXTURE0 + this.textures["volume"].unit);
+        gl.bindTexture(gl.TEXTURE_3D, this.textures["volume"].texture);
+
+        gl.activeTexture(gl.TEXTURE0 + this.textures["transfer_fn"].unit);
+        gl.bindTexture(gl.TEXTURE_2D, this.textures["transfer_fn"].texture);
 
         const primitiveType = gl.TRIANGLES;
         const count = this.mesh.length;
