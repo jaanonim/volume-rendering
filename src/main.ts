@@ -4,17 +4,17 @@ import Renderer from "./webgl/renderer.ts";
 import { BasicProgram } from "./programs/basicProgram.ts";
 import Vector3 from "3d-game-engine-canvas/src/utilities/math/Vector3.ts";
 import { Camera } from "./utils/camera.ts";
-import { cube, teapot, toVertexArray } from "./models/models.ts";
+import { cube, toVertexArray } from "./models/models.ts";
 import Quaternion from "3d-game-engine-canvas/src/utilities/Quaternion.ts";
 import { RaymarchingProgram } from "./programs/raymarchingProgram.ts";
 
-const teapotModel = toVertexArray(teapot);
+// const teapotModel = toVertexArray(teapot);
 const cubeModel = toVertexArray(cube);
 
 const t = Transform.zero()
     .scale(new Vector3(0.3, 0.3, 0.3))
     .move(new Vector3(0, 2, -2));
-const b = new BasicProgram(t, teapotModel);
+// const b = new BasicProgram(t, teapotModel);
 
 const t2 = Transform.zero()
     .scale(new Vector3(10, 1, 10))
