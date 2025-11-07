@@ -4,7 +4,7 @@ import Renderer from "./webgl/renderer.ts";
 import { BasicProgram } from "./programs/basicProgram.ts";
 import Vector3 from "3d-game-engine-canvas/src/utilities/math/Vector3.ts";
 import { Camera } from "./utils/camera.ts";
-import { cube, toVertexArray } from "./models/models.ts";
+import { cube, bonsai, toVertexArray } from "./models/models.ts";
 import Quaternion from "3d-game-engine-canvas/src/utilities/Quaternion.ts";
 import { RaymarchingProgram } from "./programs/raymarchingProgram.ts";
 
@@ -25,7 +25,7 @@ const rm = new RaymarchingProgram(
     Transform.zero()
         .move(new Vector3(0, 0.1, -2))
         .rotate(Quaternion.euler(new Vector3(0.1, Math.PI / 4, 0))),
-    cubeModel
+    bonsai
 );
 
 const speed = new Vector3(0.5, 0.3, 0.2);

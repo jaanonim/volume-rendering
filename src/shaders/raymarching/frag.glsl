@@ -30,16 +30,13 @@ vec2 rayBoxIntersect(vec3 rayOrigin, vec3 rayDir) {
 
 
 void main() {
-	 // Ray in camera space: from origin (0,0,0) to fragment
-    vec3 rayOrigin_cam = vec3(0.0, 0.0, 0.0);
     vec3 rayDir_cam = normalize(cam_rel_pos.xyz);
 
-    // Transform ray to cube's local space
     mat4 worldToLocal = inverse(u_matrix_translation);
     mat4 camToWorld = inverse(u_matrix_camera_translation);
     mat4 camToLocal = worldToLocal * camToWorld;
 
-    vec3 rayOrigin_local = (camToLocal * vec4(rayOrigin_cam, 1.0)).xyz;
+    vec3 rayOrigin_local = (camToLocal * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
     vec3 rayDir_local = normalize((camToLocal * vec4(rayDir_cam, 0.0)).xyz);
 
 	vec2 t_hit = rayBoxIntersect(rayOrigin_local, rayDir_local);
@@ -59,7 +56,7 @@ void main() {
        	vec3 samplePos = rayOrigin_local + rayDir_local * t + vec3(0.5);
 		float val = texture(volume, samplePos).r;
 		vec3 voxel_color = texture(transfer_fn, vec2(val, 0.5)).rgb;
-		voxel_color = vec3(1,0,1); // debug
+		// voxel_color = vec3(1,0,1); // debug
 		vec4 val_color = vec4(voxel_color, val);
 
 		color.rgb += (1.0 - color.a) * val_color.a * val_color.rgb;
@@ -71,36 +68,3 @@ void main() {
 		}
 	}
 }
-
-
-
-// void main() {
-//     // Ray in camera space: from origin (0,0,0) to fragment
-//     vec3 rayOrigin_cam = vec3(0.0, 0.0, 0.0);
-//     vec3 rayDir_cam = normalize(cam_rel_pos.xyz);
-
-//     // Transform ray to cube's local space
-//     mat4 worldToLocal = inverse(u_matrix_translation);
-//     mat4 camToWorld = inverse(u_matrix_camera_translation);
-//     mat4 camToLocal = worldToLocal * camToWorld;
-
-//     vec3 rayOrigin_local = (camToLocal * vec4(rayOrigin_cam, 1.0)).xyz;
-//     vec3 rayDir_local = normalize((camToLocal * vec4(rayDir_cam, 0.0)).xyz);
-
-// 	vec2 tHit = rayBoxIntersect(rayOrigin_local, rayDir_local);
-// 	float tNear = tHit.x;
-// 	float tFar = tHit.y;
-
-// 	if (tFar >= tNear && tFar >= 0.0)
-//     if () {
-//         // Calculate entry and exit points in local space
-//         vec3 entryPoint = rayOrigin_local + rayDir_local * tNear;
-//         vec3 exitPoint = rayOrigin_local + rayDir_local * tFar;
-// 		float travelDistance = tFar - tNear;
-
-//         // Visualize entry point (map from [-0.5, 0.5] to [0, 1] for colors)
-//         color = vec4(travelDistance + 0.5,0,0, 1.0);
-//     } else {
-//         discard;
-//     }
-// }

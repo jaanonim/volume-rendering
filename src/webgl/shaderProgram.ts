@@ -71,14 +71,19 @@ export class ShaderProgram {
         gl.texImage2D(
             gl.TEXTURE_2D,
             0,
-            gl.RGB,
+            gl.RGBA,
             t.size.x,
             t.size.y,
             0,
-            gl.RGB,
+            gl.RGBA,
             gl.UNSIGNED_BYTE,
             t.data
         );
+
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
         gl.uniform1i(this.uniformsLocations[name], this.textures[name].unit);
     }

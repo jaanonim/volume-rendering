@@ -3,19 +3,28 @@ import cubeSrc from "./cube.obj?raw";
 import teapotSrc from "./teapot.obj?raw";
 import Mesh from "3d-game-engine-canvas/src/utilities/Mesh";
 import Vector3 from "3d-game-engine-canvas/src/utilities/math/Vector3";
-import vUrl from "../assets/fuel_64x64x64_uint8.raw?url";
+import fuelUrl from "../assets/fuel_64x64x64_uint8.raw?url";
+import backpackUrl from "../assets/backpack_512x512x373_uint16.raw?url";
+import bonsaiUrl from "../assets/bonsai_256x256x256_uint8.raw?url";
 
 export const cube = new ObjLoader(cubeSrc).parse();
 export const teapot = new ObjLoader(teapotSrc).parse();
 export const fuel = {
     size: new Vector3(64, 64, 64),
-    data: await importUint8Volume(vUrl),
+    data: await importUint8Volume(fuelUrl),
+};
+export const backpack = {
+    size: new Vector3(512, 512, 373),
+    data: await importUint8Volume(backpackUrl),
+};
+export const bonsai = {
+    size: new Vector3(256, 256, 256),
+    data: await importUint8Volume(bonsaiUrl),
 };
 
 export async function importUint8Volume(url: string): Promise<Uint8Array> {
     const res = await fetch(url);
     const buf = await res.arrayBuffer();
-    console.log(buf);
     return new Uint8Array(buf);
 }
 

@@ -3,12 +3,20 @@ import { gl } from "../webgl/context";
 import { ShaderProgram } from "../webgl/shaderProgram";
 import { Transform } from "../utils/transform";
 import { transform } from "../utils/vec";
-import { fuel } from "../models/models";
-import { ColorMaps } from "../models/colorMaps";
+import { cube, toVertexArray, Volume } from "../models/models";
+import { ColorMaps, Texture } from "../models/colorMaps";
 
 export class RaymarchingProgram extends ShaderProgram {
-    constructor(public transform: Transform, public mesh: Float32Array) {
+    mesh: Float32Array<ArrayBuffer>;
+
+    constructor(
+        public transform: Transform,
+        public volume: Volume,
+        public colorMap: Texture = ColorMaps.hot
+    ) {
         super(raymarchingProgram);
+        this.mesh = toVertexArray(cube);
+        console.log(colorMap);
     }
 
     init() {
@@ -17,8 +25,8 @@ export class RaymarchingProgram extends ShaderProgram {
         this.makeUniform("u_matrix_camera_translation");
         this.makeUniform("u_matrix_translation");
         this.makeUniform("u_volume_size");
-        this.makeTexture3D("volume", fuel);
-        this.makeTexture2D("transfer_fn", ColorMaps.hot);
+        this.makeTexture2D("transfer_fn", this.colorMap);
+        this.makeTexture3D("volume", this.volume);
     }
 
     draw() {
@@ -68,7 +76,11 @@ export class RaymarchingProgram extends ShaderProgram {
 
         gl.uniform3iv(
             this.uniformsLocations["u_volume_size"],
-            new Int32Array([fuel.size.x, fuel.size.y, fuel.size.z])
+            new Int32Array([
+                this.volume.size.x,
+                this.volume.size.y,
+                this.volume.size.z,
+            ])
         );
 
         gl.uniform1i(
