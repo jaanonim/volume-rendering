@@ -1,11 +1,20 @@
-import { mat4, quat, vec3 } from "gl-matrix";
+import { mat4, quat, vec3, vec4 } from "gl-matrix";
 import { gl } from "../webgl/context";
 import Vector3 from "3d-game-engine-canvas/src/utilities/math/Vector3";
 import type { Transform } from "./transform";
 import { Camera } from "./camera";
+import Color from "3d-game-engine-canvas/src/utilities/math/Color";
 
 export function vector3ToVec3(v: Vector3): vec3 {
     return [v.x, v.y, v.z] as vec3;
+}
+
+export function colorToVec4(c: Color): vec4 {
+    return [c.r, c.g, c.b, c.a] as vec4;
+}
+
+export function colorToFloat32Array(c: Color): Float32Array {
+    return new Float32Array([c.r, c.g, c.b, c.a]);
 }
 
 export interface TransformMatrices {

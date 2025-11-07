@@ -1,39 +1,33 @@
 import "./style.css";
-import { Transform } from "./utils/transform.ts";
 import Renderer from "./webgl/renderer.ts";
-import { BasicProgram } from "./programs/basicProgram.ts";
 import Vector3 from "3d-game-engine-canvas/src/utilities/math/Vector3.ts";
 import { Camera } from "./utils/camera.ts";
-import { cube, bonsai, toVertexArray } from "./models/models.ts";
-import Quaternion from "3d-game-engine-canvas/src/utilities/Quaternion.ts";
-import { RaymarchingProgram } from "./programs/raymarchingProgram.ts";
+import { cube, bonsai, fuel } from "./models/models.ts";
+import { makeBasicObject, makeRaymarchingObject } from "./utils/creator.ts";
+import Color from "3d-game-engine-canvas/src/utilities/math/Color.ts";
+import { ColorMaps } from "./models/colorMaps.ts";
 
-// const teapotModel = toVertexArray(teapot);
-const cubeModel = toVertexArray(cube);
+const bonsaiObj = makeRaymarchingObject({
+    volume: bonsai,
+    position: new Vector3(0, 0.1, -2),
+    rotation: new Vector3(0.1, Math.PI / 4, 0),
+});
 
-const t = Transform.zero()
-    .scale(new Vector3(0.3, 0.3, 0.3))
-    .move(new Vector3(0, 2, -2));
-// const b = new BasicProgram(t, teapotModel);
+const floorObj = makeBasicObject({
+    mesh: cube,
+    scale: new Vector3(10, 0.1, 10),
+    position: new Vector3(0, -1, 0),
+    color: new Color(150, 150, 150, 255),
+});
 
-const t2 = Transform.zero()
-    .scale(new Vector3(10, 1, 10))
-    .move(new Vector3(0, -1, 0));
-const b2 = new BasicProgram(t2, cubeModel);
+const fuelObj = makeRaymarchingObject({
+    volume: fuel,
+    colorMap: ColorMaps.gray,
+    position: new Vector3(-2, 0, -2),
+    rotation: new Vector3(0.1, Math.PI / 4, 0),
+});
 
-const rm = new RaymarchingProgram(
-    Transform.zero()
-        .move(new Vector3(0, 0.1, -2))
-        .rotate(Quaternion.euler(new Vector3(0.1, Math.PI / 4, 0))),
-    bonsai
-);
-
-const speed = new Vector3(0.5, 0.3, 0.2);
-new Renderer([b2, rm])
-    .setUpdate(() => {
-        t.rotate(Quaternion.euler(speed.multiply(Renderer.deltaTime)));
-    })
-    .run();
+new Renderer([floorObj, bonsaiObj, fuelObj]).setUpdate(() => {}).run();
 
 document.onkeydown = (e) => {
     const amount = 0.1;

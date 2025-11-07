@@ -16,7 +16,6 @@ export class RaymarchingProgram extends ShaderProgram {
     ) {
         super(raymarchingProgram);
         this.mesh = toVertexArray(cube);
-        console.log(colorMap);
     }
 
     init() {

@@ -55,12 +55,11 @@ void main() {
 	for (float t = t_hit.x; t < t_hit.y; t += dt) {
        	vec3 samplePos = rayOrigin_local + rayDir_local * t + vec3(0.5);
 		float val = texture(volume, samplePos).r;
-		vec3 voxel_color = texture(transfer_fn, vec2(val, 0.5)).rgb;
+		vec4 voxel_color = texture(transfer_fn, vec2(val, 0.5));
 		// voxel_color = vec3(1,0,1); // debug
-		vec4 val_color = vec4(voxel_color, val);
-
-		color.rgb += (1.0 - color.a) * val_color.a * val_color.rgb;
-		color.a += (1.0 - color.a) * val_color.a;
+		float a = val * voxel_color.a;
+		color.rgb += (1.0 - color.a) * a * voxel_color.rgb;
+		color.a += (1.0 - color.a) * a;
 
 
 		if (color.a >= 0.95) {
