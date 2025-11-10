@@ -3,13 +3,21 @@ import type { ShaderProgram } from "./shaderProgram";
 
 export default class Renderer {
     static deltaTime: number = 1;
+    public opaqueShaderPrograms: Array<ShaderProgram>;
+    public transparentShaderPrograms: Array<ShaderProgram>;
 
     public update: () => void;
     public start: () => void;
 
-    constructor(public shaderPrograms: Array<ShaderProgram>) {
+    constructor(shaderPrograms: Array<ShaderProgram>) {
         this.update = () => {};
         this.start = () => {};
+        this.opaqueShaderPrograms = shaderPrograms.filter(
+            (p) => !p.transparent
+        );
+        this.transparentShaderPrograms = shaderPrograms.filter(
+            (p) => p.transparent
+        );
     }
 
     setUpdate(update: () => void) {
@@ -23,7 +31,10 @@ export default class Renderer {
     }
 
     run() {
-        this.shaderPrograms.forEach((p) => {
+        this.opaqueShaderPrograms.forEach((p) => {
+            p.init();
+        });
+        this.transparentShaderPrograms.forEach((p) => {
             p.init();
         });
         this.start();
@@ -42,9 +53,16 @@ export default class Renderer {
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.DITHER);
 
-        this.shaderPrograms.forEach((p) => {
+        this.opaqueShaderPrograms.forEach((p) => {
             p.draw();
         });
+        this.transparentShaderPrograms
+            .sort((a, b) => {
+                return b.getDistanceToCamera() - a.getDistanceToCamera();
+            })
+            .forEach((p) => {
+                p.draw();
+            });
 
         Renderer.deltaTime = performance.now() - start;
 

@@ -6,6 +6,7 @@ export class ShaderProgram {
     program: WebGLProgram;
     attributes: { [key: string]: { location: number; buffer: WebGLBuffer } };
     uniformsLocations: { [key: string]: WebGLUniformLocation | null };
+    transparent: boolean = false;
     textures: {
         [key: string]: {
             texture: WebGLTexture | null;
@@ -93,6 +94,10 @@ export class ShaderProgram {
         this.attributes = {};
         this.uniformsLocations = {};
         this.textures = {};
+    }
+
+    getDistanceToCamera(): number {
+        return NaN;
     }
 
     init(): void {}

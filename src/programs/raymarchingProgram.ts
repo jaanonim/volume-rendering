@@ -5,9 +5,11 @@ import { Transform } from "../utils/transform";
 import { transform } from "../utils/vec";
 import { cube, toVertexArray, Volume } from "../models/models";
 import { ColorMaps, Texture } from "../models/colorMaps";
+import { Camera } from "../utils/camera";
 
 export class RaymarchingProgram extends ShaderProgram {
     mesh: Float32Array<ArrayBuffer>;
+    transparent: boolean = true;
 
     constructor(
         public transform: Transform,
@@ -16,6 +18,13 @@ export class RaymarchingProgram extends ShaderProgram {
     ) {
         super(raymarchingProgram);
         this.mesh = toVertexArray(cube);
+    }
+
+    getDistanceToCamera(): number {
+        const dx = this.transform._position.x - Camera.camera.position.x;
+        const dy = this.transform._position.y - Camera.camera.position.y;
+        const dz = this.transform._position.z - Camera.camera.position.z;
+        return dx * dx + dy * dy + dz * dz;
     }
 
     init() {
