@@ -2,7 +2,7 @@ import "./style.css";
 import Renderer from "./webgl/renderer.ts";
 import Vector3 from "3d-game-engine-canvas/src/utilities/math/Vector3.ts";
 import { Camera } from "./utils/camera.ts";
-import { cube, bonsai, fuel } from "./models/models.ts";
+import { cube, bonsai, fuel, backpack, skull } from "./models/models.ts";
 import { makeBasicObject, makeRaymarchingObject } from "./utils/creator.ts";
 import Color from "3d-game-engine-canvas/src/utilities/math/Color.ts";
 import { ColorMaps } from "./models/colorMaps.ts";
@@ -27,7 +27,32 @@ const fuelObj = makeRaymarchingObject({
     rotation: new Vector3(0.1, Math.PI / 4, 0),
 });
 
-new Renderer([floorObj, bonsaiObj, fuelObj]).setUpdate(() => {}).run();
+const backpackObj = makeRaymarchingObject({
+    volume: backpack,
+    colorMap: ColorMaps.fadeOpacity(ColorMaps.viridis),
+    position: new Vector3(2, 0, -2),
+    rotation: new Vector3(-Math.PI / 2, 0, 0),
+});
+
+// const toothObj = makeRaymarchingObject({
+//     volume: tooth,
+//     colorMap: ColorMaps.hot,
+//     position: new Vector3(4, 0, -2),
+//     rotation: new Vector3(0.1, Math.PI / 4, 0),
+// });
+
+const skullObj = makeRaymarchingObject({
+    volume: skull,
+    colorMap: ColorMaps.clampOpacity(ColorMaps.hot, 30, 250),
+    position: new Vector3(-4, 0, -2),
+    rotation: new Vector3(-Math.PI / 2, 0, Math.PI / 2),
+});
+
+new Renderer([floorObj, bonsaiObj, fuelObj, skullObj, backpackObj])
+    .setUpdate(() => {})
+    .run();
+
+// new Renderer([floorObj, bonsaiObj]).setUpdate(() => {}).run();
 
 document.onkeydown = (e) => {
     const amount = 0.1;
