@@ -29,9 +29,10 @@ const fuelObj = makeRaymarchingObject({
 
 const backpackObj = makeRaymarchingObject({
     volume: backpack,
-    colorMap: ColorMaps.fadeOpacity(ColorMaps.viridis),
+    colorMap: ColorMaps.viridis,
     position: new Vector3(2, 0, -2),
     rotation: new Vector3(-Math.PI / 2, 0, 0),
+    enableMaxValueSampling: true,
 });
 
 // const toothObj = makeRaymarchingObject({
@@ -43,9 +44,10 @@ const backpackObj = makeRaymarchingObject({
 
 const skullObj = makeRaymarchingObject({
     volume: skull,
-    colorMap: ColorMaps.clampOpacity(ColorMaps.hot, 30, 250),
+    colorMap: ColorMaps.hot,
     position: new Vector3(-4, 0, -2),
     rotation: new Vector3(-Math.PI / 2, 0, Math.PI / 2),
+    enableMaxValueSampling: true,
 });
 
 new Renderer([floorObj, bonsaiObj, fuelObj, skullObj, backpackObj])

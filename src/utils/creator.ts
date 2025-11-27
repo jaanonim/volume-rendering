@@ -14,6 +14,7 @@ interface makeRaymarchingObjectProps {
     position?: Vector3;
     rotation?: Vector3;
     scale?: Vector3;
+    enableMaxValueSampling?: boolean;
 }
 
 export function makeRaymarchingObject({
@@ -22,6 +23,7 @@ export function makeRaymarchingObject({
     position = Vector3.zero,
     rotation = Vector3.zero,
     scale = Vector3.one,
+    enableMaxValueSampling = false,
 }: makeRaymarchingObjectProps): RaymarchingProgram {
     const rm = new RaymarchingProgram(
         Transform.zero()
@@ -29,7 +31,8 @@ export function makeRaymarchingObject({
             .rotate(Quaternion.euler(rotation))
             .scale(scale),
         volume,
-        colorMap
+        colorMap,
+        enableMaxValueSampling
     );
     return rm;
 }

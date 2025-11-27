@@ -10,6 +10,8 @@ uniform ivec3 u_volume_size;
 uniform mat4 u_matrix_translation;
 uniform mat4 u_matrix_camera_translation;
 
+uniform int u_enable_max_value_sampling;
+
 in vec4 cam_rel_pos;
 out vec4 color;
 
@@ -58,12 +60,17 @@ void main() {
 		vec4 voxel_color = texture(transfer_fn, vec2(val, 0.5));
 		// voxel_color = vec3(1,0,1); // debug
 		float a = val * voxel_color.a;
-		color.rgb += (1.0 - color.a) * a * voxel_color.rgb;
-		color.a += (1.0 - color.a) * a;
-
-
-		if (color.a >= 0.95) {
-			break;
+		if (u_enable_max_value_sampling == 1) {
+			if (a > color.a) {
+				color.rgb = voxel_color.rgb * a;
+				color.a = max(a, color.a);
+			}
+		} else {
+			color.rgb += (1.0 - color.a) * a * voxel_color.rgb;
+			color.a += (1.0 - color.a) * a;
+			if (color.a >= 0.95) {
+				break;
+			}
 		}
 	}
 }
