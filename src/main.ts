@@ -6,6 +6,8 @@ import { cube, bonsai, fuel, backpack, skull } from "./models/models.ts";
 import { makeBasicObject, makeRaymarchingObject } from "./utils/creator.ts";
 import Color from "3d-game-engine-canvas/src/utilities/math/Color.ts";
 import { ColorMaps } from "./models/colorMaps.ts";
+import { MarchingCubes } from "./utils/marchingCubes.ts";
+import { testAll, testVolume1, testVolume2 } from "./models/test.ts";
 
 const bonsaiObj = makeRaymarchingObject({
     volume: bonsai,
@@ -18,6 +20,14 @@ const floorObj = makeBasicObject({
     scale: new Vector3(10, 0.1, 10),
     position: new Vector3(0, -1, 0),
     color: new Color(150, 150, 150, 255),
+});
+
+const fuelSolidObj = makeBasicObject({
+    mesh: new MarchingCubes(fuel).march(230),
+    scale: new Vector3(1 / fuel.size.x, 1 / fuel.size.y, 1 / fuel.size.z),
+    position: new Vector3(-2, 1, -2),
+    rotation: new Vector3(0.1, Math.PI / 4, 0),
+    color: new Color(255, 0, 0, 255),
 });
 
 const fuelObj = makeRaymarchingObject({
@@ -50,11 +60,25 @@ const skullObj = makeRaymarchingObject({
     enableMaxValueSampling: true,
 });
 
-new Renderer([floorObj, bonsaiObj, fuelObj, skullObj, backpackObj])
-    .setUpdate(() => {})
-    .run();
+// new Renderer([floorObj, bonsaiObj, fuelObj, skullObj, backpackObj]).run();
 
 // new Renderer([floorObj, bonsaiObj]).setUpdate(() => {}).run();
+
+new Renderer([floorObj, fuelObj, fuelSolidObj]).run();
+
+const test = makeBasicObject({
+    mesh: new MarchingCubes(testAll).march(100),
+    scale: new Vector3(
+        1 / testAll.size.x,
+        1 / testAll.size.y,
+        1 / testAll.size.z
+    ),
+    position: new Vector3(0, 0, -2),
+    rotation: new Vector3(0, 0, 0),
+    color: new Color(0, 255, 0, 255),
+});
+
+// new Renderer([test]).run();
 
 document.onkeydown = (e) => {
     const amount = 0.1;

@@ -12,6 +12,7 @@ Renderowanie volumetryczne w czasie rzeczywistym z wykorzystaniem technik ray ma
 - [Example 1](https://www.willusher.io/webgl/2019/01/13/volume-rendering-with-webgl/) - Przykład implementacji w WebGL
 - [Example 2](http://www.lebarba.com/) - Przykład implementacji w WebGL
 - [WebGL tutorial](https://webglfundamentals.org/) - Podstawy WebGL2
+- [Marching Cubes LUT](https://gist.github.com/dwilliamson/c041e3454a713e58baf6e4f8e5fffecd) - Tablice do algorytmu Marching Cubes
 
 Propozycje żródeł do nauki i inspiracji:
 

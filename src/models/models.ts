@@ -45,7 +45,6 @@ export async function importUint16Volume(url: string): Promise<Uint16Array> {
 }
 
 export function uint16ToUint8Volume(data: Uint16Array): Uint8Array {
-    console.log(data);
     const uint8Data = new Uint8Array(data.length);
     for (let i = 0; i < data.length; i++) {
         uint8Data[i] = data[i];
@@ -53,11 +52,16 @@ export function uint16ToUint8Volume(data: Uint16Array): Uint8Array {
     return uint8Data;
 }
 
-export function toVertexArray(model: Mesh): Float32Array<ArrayBuffer> {
-    const list = model.triangles.flatMap((t) =>
+export function toVertexArray(
+    model: Mesh
+): [Float32Array<ArrayBuffer>, Float32Array<ArrayBuffer>] {
+    const vert = model.triangles.flatMap((t) =>
         t.vertices.flatMap((v) => [v.x, v.y, v.z])
     );
-    return new Float32Array(list);
+    const norm = model.triangles.flatMap((t) =>
+        t.verticesNormals.flatMap((v) => [v.x, v.y, v.z])
+    );
+    return [new Float32Array(vert), new Float32Array(norm)];
 }
 
 export type Volume = {

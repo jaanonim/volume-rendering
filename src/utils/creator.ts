@@ -57,7 +57,7 @@ export function makeBasicObject({
             .move(position)
             .rotate(Quaternion.euler(rotation))
             .scale(scale),
-        toVertexArray(mesh),
+        mesh,
         color
     );
     return b;
