@@ -8,6 +8,9 @@ import Color from "3d-game-engine-canvas/src/utilities/math/Color.ts";
 import { ColorMaps } from "./models/colorMaps.ts";
 import { MarchingCubes } from "./utils/marchingCubes.ts";
 import { testAll, testVolume1, testVolume2 } from "./models/test.ts";
+import { TextureBasedProgram } from "./programs/textureBasedProgram.ts";
+import { Transform } from "./utils/transform.ts";
+import Quaternion from "3d-game-engine-canvas/src/utilities/Quaternion.ts";
 
 const bonsaiObj = makeRaymarchingObject({
     volume: bonsai,
@@ -64,7 +67,14 @@ const skullObj = makeRaymarchingObject({
 
 // new Renderer([floorObj, bonsaiObj]).setUpdate(() => {}).run();
 
-new Renderer([floorObj, fuelObj, fuelSolidObj]).run();
+const t = new Transform(
+    Vector3.one,
+    Quaternion.euler(Vector3.zero),
+    Vector3.zero
+);
+const tb = new TextureBasedProgram(t, fuel);
+
+new Renderer([floorObj, tb]).run();
 
 const test = makeBasicObject({
     mesh: new MarchingCubes(testAll).march(100),

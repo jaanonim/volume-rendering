@@ -25,6 +25,13 @@ export class ShaderProgram {
             buffer,
         };
     }
+
+    updateAttribute(name: string, data: Float32Array, offset: number = 0) {
+        const attribute = this.attributes[name];
+        gl.bindBuffer(gl.ARRAY_BUFFER, attribute.buffer);
+        gl.bufferSubData(gl.ARRAY_BUFFER, offset, data);
+    }
+
     makeUniform(name: string) {
         this.uniformsLocations[name] = gl.getUniformLocation(
             this.program,
