@@ -14,7 +14,7 @@ import Vector3 from "3d-game-engine-canvas/src/utilities/math/Vector3";
 export class TextureBasedProgram extends ShaderProgram {
     mesh: Mesh;
     transparent: boolean = true;
-    numberOfSlices: number = 10;
+    numberOfSlices: number = 64;
 
     constructor(
         public transform: Transform,
@@ -34,11 +34,12 @@ export class TextureBasedProgram extends ShaderProgram {
     }
 
     private generateViewAlignedSlices(
-        numSlices: number
+        numSlices: number,
+        lookAtMatrix: Float32Array<ArrayBufferLike>,
+        translationMatrix: Float32Array<ArrayBufferLike>
     ): [Float32Array, Array<[number, number]>] {
         const slices: Array<Array<number>> = [];
 
-        const { lookAtMatrix, translationMatrix } = transform(this.transform);
         const vertexes = this.mesh.getVertices().map((pos) => {
             const vec = vector3ToVec3(pos);
             vec3.transformMat4(vec, vec, translationMatrix);
@@ -111,7 +112,6 @@ export class TextureBasedProgram extends ShaderProgram {
                     sliceVertices.push(v01, v02);
                 }
             }
-
             const origin = sliceVertices[0];
             const triangles = [];
             for (let k = 1; k < sliceVertices.length; k++) {
@@ -135,8 +135,11 @@ export class TextureBasedProgram extends ShaderProgram {
     }
 
     init() {
+        const { lookAtMatrix, translationMatrix } = transform(this.transform);
         const [data, _offset] = this.generateViewAlignedSlices(
-            this.numberOfSlices
+            this.numberOfSlices * 2,
+            lookAtMatrix,
+            translationMatrix
         );
         this.makeAttribute("a_position", data, gl.DYNAMIC_DRAW);
         this.makeUniform("u_matrix_projection");
@@ -151,7 +154,7 @@ export class TextureBasedProgram extends ShaderProgram {
     draw() {
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-        gl.cullFace(gl.FRONT);
+        gl.disable(gl.CULL_FACE);
         gl.useProgram(this.program);
 
         const { lookAtMatrix, perspectiveMatrix, translationMatrix } =
@@ -205,7 +208,9 @@ export class TextureBasedProgram extends ShaderProgram {
         gl.bindTexture(gl.TEXTURE_2D, this.textures["transfer_fn"].texture);
 
         const [data, offsets] = this.generateViewAlignedSlices(
-            this.numberOfSlices
+            this.numberOfSlices,
+            lookAtMatrix,
+            translationMatrix
         );
         this.updateAttribute("a_position", data);
         const a_vertex = this.attributes["a_position"];
@@ -229,7 +234,6 @@ export class TextureBasedProgram extends ShaderProgram {
             const primitiveType = gl.TRIANGLES;
             gl.drawArrays(primitiveType, 0, length);
         });
-
-        gl.cullFace(gl.BACK);
+        gl.enable(gl.CULL_FACE);
     }
 }

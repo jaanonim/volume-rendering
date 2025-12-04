@@ -70,11 +70,15 @@ const skullObj = makeRaymarchingObject({
 const t = new Transform(
     Vector3.one,
     Quaternion.euler(Vector3.zero),
-    Vector3.zero
+    new Vector3(0, 0, -2)
 );
 const tb = new TextureBasedProgram(t, fuel);
 
-new Renderer([floorObj, tb]).run();
+new Renderer([floorObj, tb])
+    .setUpdate(() => {
+        t.rotate(Quaternion.euler(new Vector3(0.02, 0.01, 0)));
+    })
+    .run();
 
 const test = makeBasicObject({
     mesh: new MarchingCubes(testAll).march(100),
