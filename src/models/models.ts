@@ -7,7 +7,6 @@ import fuelUrl from "../assets/fuel_64x64x64_uint8.raw?url";
 import backpackUrl from "../assets/backpack_512x512x373_uint16.raw?url";
 import bonsaiUrl from "../assets/bonsai_256x256x256_uint8.raw?url";
 import skullUrl from "../assets/skull_256x256x256_uint8.raw?url";
-import toothUrl from "../assets/tooth_103x94x161_uint8.raw?url";
 
 export const cube = new ObjLoader(cubeSrc).parse();
 export const teapot = new ObjLoader(teapotSrc).parse();
@@ -27,11 +26,6 @@ export const skull = {
     size: new Vector3(256, 256, 256),
     data: await importUint8Volume(skullUrl),
 };
-export const tooth = {
-    size: new Vector3(103, 94, 161),
-    data: await importUint8Volume(toothUrl),
-};
-
 export async function importUint8Volume(url: string): Promise<Uint8Array> {
     const res = await fetch(url);
     const buf = await res.arrayBuffer();
