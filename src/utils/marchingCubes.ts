@@ -15,6 +15,9 @@ type CubeValues = [
     number
 ];
 
+const MIN = 0;
+const MAX = 255;
+
 export class MarchingCubes {
     constructor(public volume: Volume) {}
 
@@ -60,6 +63,10 @@ export class MarchingCubes {
         return posA.subtract(posB).multiply(v).add(posB);
     }
 
+    convertThreshold(value: number): number {
+        return MIN + (MAX - MIN) * value;
+    }
+
     march(threshold: number): Mesh {
         const triangles: Array<Triangle> = [];
         for (let z = -1; z < this.volume.size.z; z++) {
@@ -78,7 +85,7 @@ export class MarchingCubes {
                     const t = this.makeTriangles(
                         new Vector3(x, y, z),
                         values,
-                        threshold
+                        this.convertThreshold(threshold)
                     );
                     triangles.push(...t);
                 }

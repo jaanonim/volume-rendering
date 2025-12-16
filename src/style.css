@@ -28,3 +28,18 @@ canvas {
     color: #0f0;
     z-index: 100;
 }
+
+.gui {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-family: Arial, sans-serif;
+    z-index: 100;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

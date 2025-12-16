@@ -8,6 +8,35 @@
     <body>
         <div id="fps"></div>
         <canvas id="root" width="1920" height="1080"></canvas>
+        <div class="gui">
+            <label for="model">Select Model:</label>
+            <select id="model"></select>
+
+            <label for="colorMap">Select Color Map:</label>
+            <select id="colorMap"></select>
+
+            <label for="threshold">Threshold for Marching Cubes:</label>
+            <input
+                type="range"
+                id="threshold"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.1"
+            />
+
+            <label for="slices"
+                >Number of Slices for Texture-Based Rendering:</label
+            >
+            <input
+                type="range"
+                id="slices"
+                min="2"
+                max="256"
+                step="1"
+                value="64"
+            />
+        </div>
         <!-- <canvas id="root" width="1280" height="720"></canvas> -->
         <script type="module" src="/src/main.ts"></script>
     </body>

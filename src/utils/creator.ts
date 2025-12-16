@@ -7,6 +7,7 @@ import { ColorMaps, Texture } from "../models/colorMaps";
 import Color from "3d-game-engine-canvas/src/utilities/math/Color";
 import { BasicProgram } from "../programs/basicProgram";
 import Mesh from "3d-game-engine-canvas/src/utilities/Mesh";
+import { TextureBasedProgram } from "../programs/textureBasedProgram";
 
 interface makeRaymarchingObjectProps {
     volume: Volume;
@@ -61,4 +62,33 @@ export function makeBasicObject({
         color
     );
     return b;
+}
+
+interface makeTextureBasedObjectProps {
+    volume: Volume;
+    colorMap?: Texture;
+    position?: Vector3;
+    rotation?: Vector3;
+    scale?: Vector3;
+    numberOfSlices?: number;
+}
+
+export function makeTextureBasedObject({
+    volume,
+    colorMap = ColorMaps.hot,
+    position = Vector3.zero,
+    rotation = Vector3.zero,
+    scale = Vector3.one,
+    numberOfSlices = 64,
+}: makeTextureBasedObjectProps) {
+    const tb = new TextureBasedProgram(
+        Transform.zero()
+            .move(position)
+            .rotate(Quaternion.euler(rotation))
+            .scale(scale),
+        volume,
+        colorMap,
+        numberOfSlices
+    );
+    return tb;
 }

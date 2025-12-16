@@ -14,13 +14,12 @@ import Vector3 from "3d-game-engine-canvas/src/utilities/math/Vector3";
 export class TextureBasedProgram extends ShaderProgram {
     mesh: Mesh;
     transparent: boolean = true;
-    numberOfSlices: number = 64;
 
     constructor(
         public transform: Transform,
         public volume: Volume,
         public colorMap: Texture = ColorMaps.hot,
-        public enableMaxValueSampling: boolean = true
+        public numberOfSlices: number = 64
     ) {
         super(textureBasedProgram);
         this.mesh = cube;
@@ -146,7 +145,6 @@ export class TextureBasedProgram extends ShaderProgram {
         this.makeUniform("u_matrix_camera_translation");
         this.makeUniform("u_matrix_translation");
         this.makeUniform("u_volume_size");
-        this.makeUniform("u_enable_max_value_sampling");
         this.makeTexture2D("transfer_fn", this.colorMap);
         this.makeTexture3D("volume", this.volume);
     }
@@ -185,11 +183,6 @@ export class TextureBasedProgram extends ShaderProgram {
                 this.volume.size.y,
                 this.volume.size.z,
             ])
-        );
-
-        gl.uniform1i(
-            this.uniformsLocations["u_enable_max_value_sampling"],
-            this.enableMaxValueSampling ? 1 : 0
         );
 
         gl.uniform1i(

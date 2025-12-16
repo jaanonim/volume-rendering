@@ -5,6 +5,7 @@ export default class Renderer {
     static deltaTime: number = 1;
     public opaqueShaderPrograms: Array<ShaderProgram>;
     public transparentShaderPrograms: Array<ShaderProgram>;
+    public toDestroy: boolean = false;
 
     public update: () => void;
     public start: () => void;
@@ -66,6 +67,21 @@ export default class Renderer {
 
         Renderer.deltaTime = performance.now() - start;
 
-        requestAnimationFrame(() => this.draw());
+        requestAnimationFrame(() => {
+            if (!this.toDestroy) {
+                this.draw();
+            } else {
+                this.finishDestroy();
+            }
+        });
+    }
+
+    destroy() {
+        this.toDestroy = true;
+    }
+
+    finishDestroy() {
+        this.update = () => {};
+        this.start = () => {};
     }
 }
